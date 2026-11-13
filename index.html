@@ -97,12 +97,11 @@ select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:10
 .water button{width:100%;height:42px;border-radius:8px 8px 12px 12px;border:1.5px solid var(--accent);background:transparent;padding:0}
 .water button.on{background:var(--accent)}
 
-details.sec{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-details.sec>summary{list-style:none;padding:14px;display:flex;-webkit-tap-highlight-color:transparent;justify-content:space-between;align-items:center;gap:8px;cursor:pointer}
-details.sec>summary::-webkit-details-marker{display:none}
-details.sec>summary::after{content:"+";font-family:var(--display);font-size:20px;color:var(--muted)}
-details.sec[open]>summary::after{content:"–"}
-details.sec .body{padding:0 14px 14px;display:flex;flex-direction:column;gap:8px}
+.sec{background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.sec-h{width:100%;border:0;background:transparent;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.sec-h .ic{font-family:var(--display);font-size:22px;line-height:1;color:var(--muted);flex-shrink:0}
+.sec .body{padding:0 14px 14px;display:none;flex-direction:column;gap:8px}
+.sec.open .body{display:flex}
 .opt{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
 .opt b{font-weight:700}
 .tbl{width:100%;border-collapse:collapse;font-size:13.5px}
@@ -374,7 +373,12 @@ function renderRefeicoes(){
   h += sec('Frutas e legumes', `<div class="small"><b>Frutas (≈ 50–60 kcal):</b> 130 g de mamão = 180 g de morango = 1 kiwi grande = 100 g de maçã = ½ banana prata (55 g) = 200 g de melão = 120 g de abacaxi = 180 g de melancia.</div><div class="small"><b>Legumes que estufam menos:</b> abobrinha, cenoura, chuchu, abóbora, vagem, berinjela, espinafre, alface, pepino, tomate. <b>Com moderação:</b> brócolis, couve-flor, repolho, cebola, alho.</div>`);
   main.innerHTML = h;
 }
-function sec(title, body, open){ return `<details class="sec" ${open?'open':''}><summary><h3>${title}</h3></summary><div class="body">${body}</div></details>`; }
+function sec(title, body, open){ return `<section class="sec ${open?'open':''}"><button type="button" class="sec-h" aria-expanded="${!!open}"><h3>${title}</h3><span class="ic">${open?'–':'+'}</span></button><div class="body">${body}</div></section>`; }
+main.addEventListener('click', e => {
+  const h = e.target.closest('.sec-h'); if(!h) return;
+  const sc = h.parentElement; const open = !sc.classList.contains('open');
+  sc.classList.toggle('open', open); h.setAttribute('aria-expanded', open); h.querySelector('.ic').textContent = open ? '–' : '+';
+});
 function protTable(){ return `<div class="tw"><table class="tbl"><thead><tr><th>Proteína (pronta)</th><th>Qtd.</th><th class="num">kcal</th></tr></thead><tbody>${PROT.map(p=>`<tr><td>${esc(p.t)}${p.n?`<div class="small muted">${p.n}</div>`:''}</td><td>${p.q}</td><td class="num">${p.k}</td></tr>`).join('')}</tbody></table></div>`; }
 function carbTable(arr, t){ return `<div class="tw"><table class="tbl"><thead><tr><th>${t}</th><th>Qtd. (pronto)</th></tr></thead><tbody>${arr.map(c=>`<tr><td>${esc(c.t)}</td><td>${c.q}</td></tr>`).join('')}</tbody></table></div>`; }
 
