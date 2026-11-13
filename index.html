@@ -180,7 +180,18 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .chart .ln{fill:none;stroke:var(--accent);stroke-width:2}
 .chart .dot{fill:var(--accent);stroke:var(--surface);stroke-width:2}
 .tip{min-height:18px}
-</style>
+.chips.c5{grid-template-columns:repeat(5,1fr)}
+.chips .cb{color:var(--food)} .chips button[aria-pressed="true"] .cb{color:#fff}
+.filt{display:flex;gap:6px;flex-wrap:wrap}
+.filt button{border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--muted)}
+.filt button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.hrow2{display:flex;justify-content:space-between;gap:8px;font-size:14px;flex-wrap:wrap}
+ul.hl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:13px}
+ul.hl li{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px dashed var(--line)}
+ul.hl li:last-child{border-bottom:0}
+ul.hl li.no{color:var(--muted)}
+.col0{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tbl.wk{font-size:12.5px}.tbl.wk th,.tbl.wk td{padding:6px 4px}</style>
 </head>
 <body>
 <div class="app">
@@ -203,7 +214,7 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
   <a href="#hoje" data-tab="hoje"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Hoje</a>
   <a href="#refeicoes" data-tab="refeicoes"><svg viewBox="0 0 24 24"><path d="M7 3v8a2 2 0 0 0 2 2v8M11 3v8M7 7h4M17 3c-2 2-2 6 0 8v10"/></svg>Refeições</a>
   <a href="#treino" data-tab="treino"><svg viewBox="0 0 24 24"><path d="M3 10v4M6 7v10M18 7v10M21 10v4M6 12h12"/></svg>Treino</a>
-  <a href="#cardio" data-tab="cardio"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg>Cardio</a>
+  <a href="#historico" data-tab="historico"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>Histórico</a>
   <a href="#analise" data-tab="analise"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Análise</a>
   <a href="#dicas" data-tab="dicas"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3 11v1h6v-1a6 6 0 0 0-3-11z"/></svg>Dicas</a>
 </div></nav>
@@ -517,8 +528,10 @@ function carbTable2(id){ const m=M[id]; const fjK=FD.feijao.k*m.fjG/100; return 
 function carbTable(arr, t){ return `<div class="tw"><table class="tbl"><thead><tr><th>${t}</th><th>Qtd. (pronto)</th></tr></thead><tbody>${arr.map(c=>`<tr><td>${esc(c.t)}</td><td>${c.q}</td></tr>`).join('')}</tbody></table></div>`; }
 
 function renderTreino(){
+  const chipsH = `<div class="chips c5" role="group" aria-label="Escolher treino">${Object.keys(TREINOS).map(k=>`<button data-t="${k}" aria-pressed="${k===treino}"><b>${k}</b><span>${TREINOS[k].day}</span></button>`).join('')}<button data-t="CARDIO" aria-pressed="${treino==='CARDIO'}"><b class="cb">♥</b><span>Cardio</span></button></div>`;
+  if(treino==='CARDIO'){ renderCardio(); main.insertAdjacentHTML('afterbegin', chipsH + cardioLog()); bindTreinoChips(); bindCardioLog(); return; }
   const T = TREINOS[treino]; const dd = dayData();
-  let h = `<div class="chips" role="group" aria-label="Escolher treino">${Object.keys(TREINOS).map(k=>`<button data-t="${k}" aria-pressed="${k===treino}"><b>${k}</b><span>${TREINOS[k].day}</span></button>`).join('')}</div>
+  let h = chipsH + `
   <div class="card"><div class="row between"><h2>Treino ${treino} — ${T.name}</h2></div><div class="small muted">${T.dur} · RIR 1–2 nos compostos, 0–1 nos isolados · aquecimento: 5 min de esteira + 2 séries leves do 1º exercício.</div>
   <div class="small muted">Toque nas séries ao terminar: o descanso começa sozinho. Toque num aparelho substituto para trocar o exercício.</div></div>`;
   T.ex.forEach((e,i)=>{
@@ -536,16 +549,24 @@ function renderTreino(){
   if(T.note) h += `<div class="note">${T.note}</div>`;
   h += `<div class="card"><h3>Progressão</h3><ul class="clean small"><li>Bateu o topo das repetições em todas as séries → suba 2–5% da carga (1–2 kg nos halteres, 5–10 kg no leg press).</li><li>Força caindo 2 semanas seguidas → +100–150 kcal e confira o sono.</li><li>A cada 6–8 semanas: 1 semana de deload, com as mesmas cargas e metade das séries.</li></ul></div>`;
   main.innerHTML = h;
-  main.querySelectorAll('[data-t]').forEach(b=>b.addEventListener('click',()=>{ treino=b.dataset.t; store.set('treinoSel:'+dkey, treino); renderTreino(); main.scrollTop=0; }));
+  bindTreinoChips();
   main.querySelectorAll('[data-set]').forEach(b=>b.addEventListener('click',()=>{
-    const o = dayData(); const k=b.dataset.set, j=+b.dataset.j; o.sets[k]=o.sets[k]||[]; o.sets[k][j]=!o.sets[k][j]; saveDay(o);
+    const o = dayData(); const k=b.dataset.set, j=+b.dataset.j; o.sets[k]=o.sets[k]||[]; o.sets[k][j]=!o.sets[k][j];
+    const L=k[0], ii=+k.slice(1), e=TREINOS[L].ex[ii], sb=store.get('sub:'+k,-1); o.subsUsed=o.subsUsed||{}; o.subsUsed[k]= sb<0 ? '' : e.subs[sb];
+    const ld=store.get('load:'+k,''); if(ld){ o.loads=o.loads||{}; if(!o.loads[k]) o.loads[k]=ld; } saveDay(o);
     b.classList.toggle('on', !!o.sets[k][j]);
     if(o.sets[k][j] && +b.dataset.rest>0) startTimer(+b.dataset.rest);
   }));
-  main.querySelectorAll('[data-load]').forEach(inp=>inp.addEventListener('change',()=>store.set('load:'+inp.dataset.load, inp.value.trim())));
+  main.querySelectorAll('[data-load]').forEach(inp=>inp.addEventListener('change',()=>{ const v=inp.value.trim(); store.set('load:'+inp.dataset.load, v); const o=dayData(); o.loads=o.loads||{}; o.loads[inp.dataset.load]=v; saveDay(o); }));
   main.querySelectorAll('[data-sub]').forEach(b=>b.addEventListener('click',()=>{ const st=main.scrollTop; store.set('sub:'+b.dataset.sub, +b.dataset.i); renderTreino(); main.scrollTop=st; }));
 }
 
+function bindTreinoChips(){ main.querySelectorAll('[data-t]').forEach(b=>b.addEventListener('click',()=>{ treino=b.dataset.t; store.set('treinoSel:'+dkey, treino); renderTreino(); main.scrollTop=0; })); }
+function cardioLog(){ const a=dayData().act||{}; return `<div class="card"><h3>Registrar o cardio de hoje</h3><div class="grid2">
+  <label class="fld" for="c-ct">Tipo<select id="c-ct" data-cact="ct">${['','Esteira inclinada','Escada','Intervalado','Caminhada','Outro'].map(t=>`<option value="${t}" ${t===(a.ct||'')?'selected':''}>${t||'Não fiz'}</option>`).join('')}</select></label>
+  <label class="fld" for="c-cm">Minutos<input id="c-cm" type="number" inputmode="numeric" data-cact="cm" value="${a.cm??''}" placeholder="ex.: 40"></label></div>
+  <div class="small muted" id="c-msg">Fica salvo no Histórico e na Análise.</div></div>`; }
+function bindCardioLog(){ main.querySelectorAll('[data-cact]').forEach(el=>el.addEventListener('change',()=>{ const o=dayData(); let v=el.value.trim(); if(el.type==='number') v = v==='' ? null : parseFloat(v.replace(',','.')); o.act[el.dataset.cact]=v; saveDay(o); document.getElementById('c-msg').textContent='Cardio salvo.'; })); }
 function renderCardio(){
   const wd = (now.getDay()+6)%7;
   let h = `<div class="card"><h2>Cardio: 3× por semana</h2><div class="small">35–45 min mantendo <b>120–140 bpm</b>, cerca de 65–75% da sua FC máxima estimada (≈ 188 bpm). Nesse ritmo você consegue falar frases curtas, mas não cantar.</div>
@@ -710,6 +731,56 @@ function bindAnalise(){
   document.getElementById('bk-imp').addEventListener('click',()=>{ try{ const o=JSON.parse(txt.value); let n=0; Object.entries(o).forEach(([k,v])=>{ if(/^(d|load|sub):/.test(k)){ store.set(k,v); n++; } }); msg.textContent=`${n} registros importados.`; renderAnalise(); }catch(e){ msg.textContent='Não reconheci esses dados. Cole exatamente o texto copiado em "Copiar meus dados".'; } });
 }
 
+/* ---------- histórico ---------- */
+let histF = store.get('histF','tudo'), histN = 30;
+function mealLabel(id, ch){
+  const c = normChoice(id, ch);
+  if(c.mode==='opt') return (M[id].opts[c.i]||M[id].opts[0]).t;
+  if(c.mode==='plate'){ const pr=PROT[c.pr]||PROT[0]; return `${pr.t} + ${FD[CARBS[c.cb]||CARBS[0]].t.toLowerCase()}${c.fj?' (sem feijão)':' + feijão'}`; }
+  return 'Montado: ' + (c.items||[]).slice(0,4).map(([f,q])=>`${FD[f].t.toLowerCase()} ${qtyTxt(f,q)}`).join(', ') + ((c.items||[]).length>4?'…':'');
+}
+function weekStart(d){ const x=new Date(d); const k=(x.getDay()+6)%7; x.setDate(x.getDate()-k); x.setHours(0,0,0,0); return x; }
+function renderHistorico(){
+  const days=[]; for(let i=0;i<histN;i++){ const d=new Date(now); d.setDate(now.getDate()-i); const s=summarize(isoOf(d)); if(s&&s.any){ s.date=d; s.raw=store.get('d:'+s.iso,{}); days.push(s); } }
+  const F=histF;
+  let h = `<div class="card"><h2>Histórico</h2><div class="small muted">Tudo o que você registrou, dia a dia e por semana.</div>
+    <div class="filt" role="group" aria-label="Filtrar histórico">${[['tudo','Tudo'],['cal','Calorias'],['treino','Treino'],['agua','Água'],['cardio','Cardio']].map(([v,t])=>`<button data-hf="${v}" aria-pressed="${v===F}">${t}</button>`).join('')}</div></div>`;
+  if(!days.length){ h += `<div class="card"><h3>Nada registrado ainda</h3><div class="small">Marque refeições, água, séries e cardio na aba Hoje e na aba Treino. Cada dia aparece aqui automaticamente.</div></div>`; main.innerHTML=h; bindHist(); return; }
+  // semanas
+  const wk = {}; days.forEach(s=>{ const w=weekStart(s.date).getTime(); (wk[w]=wk[w]||[]).push(s); });
+  h += `<div class="card"><h3>Por semana</h3><div class="tw"><table class="tbl num wk"><thead><tr><th>Semana</th>${F==='tudo'||F==='cal'?'<th>kcal/dia</th><th>Prot.</th>':''}${F==='tudo'||F==='treino'?'<th>Treinos</th>'+(F==='treino'?'<th>Séries</th>':''):''}${F==='tudo'||F==='agua'?'<th>Água/dia</th>':''}${F==='tudo'||F==='cardio'?'<th>Cardio</th>':''}</tr></thead><tbody>${Object.keys(wk).sort((a,b)=>b-a).map(w=>{ const L=wk[w]; const ws=new Date(+w), we=new Date(+w); we.setDate(ws.getDate()+6);
+      const ml=L.filter(s=>s.done>0), wl=L.filter(s=>s.water>0), cl=L.filter(s=>s.cm>0);
+      const lbl=ws.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+'–'+we.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+      return `<tr><td>${lbl}</td>${F==='tudo'||F==='cal'?`<td>${ml.length?fmtN(avg(ml.map(s=>s.k))):'—'}</td><td>${ml.length?fmtN(avg(ml.map(s=>s.p)))+' g':'—'}</td>`:''}${F==='tudo'||F==='treino'?`<td>${L.filter(s=>s.setsN>=5).length} de 4</td>${F==='treino'?`<td>${L.reduce((x,s)=>x+s.setsN,0)}</td>`:''}`:''}${F==='tudo'||F==='agua'?`<td>${wl.length?f1(avg(wl.map(s=>s.water))/1000)+' L':'—'}</td>`:''}${F==='tudo'||F==='cardio'?`<td>${cl.length} de 3 · ${cl.reduce((x,s)=>x+s.cm,0)}′</td>`:''}</tr>`; }).join('')}</tbody></table></div></div>`;
+  // dias
+  days.forEach((s,idx)=>{
+    if(F==='cal' && !s.done) return; if(F==='treino' && !s.setsN) return; if(F==='agua' && !s.water) return; if(F==='cardio' && !s.cm) return;
+    const r=s.raw; const plan=PLAN[s.type]; const isToday = s.iso===dkey;
+    let b='';
+    if(F==='tudo'||F==='cal'){
+      b += `<div class="hrow2"><b>Calorias</b><span class="num">${fmtN(s.k)} / ${fmtN(s.pk)} kcal · ${s.p} g prot.</span></div><div class="bar food"><i style="width:${Math.min(100,s.k/1420*100)}%"></i></div>`;
+      b += `<ul class="hl">${plan.map(([id])=>{ const v=mealVal(id,r.choice&&r.choice[id]); const ok=r.done&&r.done[id]; return `<li class="${ok?'ok':'no'}"><span>${ok?'✓':'○'} <b>${M[id].name}:</b> ${esc(mealLabel(id, r.choice&&r.choice[id]))}</span><span class="num muted">${v.k}</span></li>`; }).join('')}</ul>`;
+    }
+    if(F==='tudo'||F==='agua') b += `<div class="hrow2"><b>Água</b><span class="num">${f1(s.water/1000)} L de 2,5 L</span></div><div class="bar"><i style="width:${Math.min(100,s.water/2500*100)}%"></i></div>`;
+    if(F==='tudo'||F==='treino'){
+      if(s.setsN){ Object.keys(s.sets).forEach(L=>{ const T=TREINOS[L]; if(!T) return;
+        b += `<div class="hrow2"><b>Treino ${L} — ${T.name}</b><span class="num">${s.sets[L]} séries</span></div><ul class="hl">${T.ex.map((e,i)=>{ const k=L+i; const n=((r.sets||{})[k]||[]).filter(Boolean).length; if(!n) return ''; const ld=(r.loads||{})[k]; const sb=(r.subsUsed||{})[k]; return `<li><span>${esc(sb||e.n)}</span><span class="num muted">${n}/${e.s}${ld?' · '+esc(ld)+' kg':''}</span></li>`; }).join('')}</ul>`; }); }
+      else if(F==='treino'||F==='tudo') b += `<div class="hrow2"><b>Treino</b><span class="muted">nenhuma série</span></div>`;
+    }
+    if(F==='tudo'||F==='cardio') b += `<div class="hrow2"><b>Cardio</b><span>${s.cm?`${esc(s.ct||'Cardio')} · ${s.cm} min`:'<span class="muted">não fez</span>'}</span></div>`;
+    if(F==='tudo'){ const ex=[]; if(s.pe) ex.push(`Peso ${f1(s.pe)} kg`); if(s.ci) ex.push(`Cintura ${f1(s.ci)} cm`); if(s.ps) ex.push(`${fmtN(s.ps)} passos`); if(s.sn) ex.push(`Sono ${f1(s.sn)} h`); if(s.es!=='') ex.push(['Sem estufamento','Um pouco estufada','Muito estufada'][+s.es]||''); if(s.fo!=='') ex.push(['','Pouca fome','Fome normal','Muita fome'][+s.fo]||'');
+      if(ex.length) b += `<div class="small">${ex.filter(Boolean).join(' · ')}</div>`; if(s.nt) b += `<div class="small muted">“${esc(s.nt)}”</div>`; }
+    const head = `<span><b>${isToday?'Hoje':s.date.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'2-digit'})}</b>${s.type!=='casa'?' <span class="muted small">· plantão</span>':''}</span><span class="small muted num">${s.done?fmtN(s.k)+' kcal':''}${s.setsN?' · '+s.treino:''}${s.cm?' · '+s.cm+'′':''}${s.water?' · '+f1(s.water/1000)+' L':''}</span>`;
+    h += `<section class="sec ${idx===0?'open':''}"><button type="button" class="sec-h" aria-expanded="${idx===0}"><span class="col0">${head}</span><span class="ic">${idx===0?'–':'+'}</span></button><div class="body">${b}</div></section>`;
+  });
+  h += `<button class="btn" id="hmore">Ver mais ${histN>=90?'(máx. 180 dias)':'30 dias'}</button>`;
+  main.innerHTML=h; bindHist();
+}
+function bindHist(){
+  main.querySelectorAll('[data-hf]').forEach(b=>b.addEventListener('click',()=>{ histF=b.dataset.hf; store.set('histF',histF); renderHistorico(); }));
+  const m=document.getElementById('hmore'); if(m) m.addEventListener('click',()=>{ histN=Math.min(180,histN+30); const st=main.scrollTop; renderHistorico(); main.scrollTop=st; });
+}
+
 /* ---------- cronômetro de descanso ---------- */
 let tLeft=0, tInt=null, actx=null;
 const tEl=document.getElementById('timer'), tVal=document.getElementById('tval');
@@ -725,10 +796,10 @@ document.getElementById('tplus').addEventListener('click',()=>{ if(tLeft<=0) ret
 document.getElementById('tstop').addEventListener('click',()=>{ clearInterval(tInt); tEl.classList.remove('show'); });
 
 /* ---------- navegação ---------- */
-const VIEWS = {hoje:renderHoje, refeicoes:renderRefeicoes, treino:renderTreino, cardio:renderCardio, analise:renderAnalise, dicas:renderDicas};
+const VIEWS = {hoje:renderHoje, refeicoes:renderRefeicoes, treino:renderTreino, cardio:()=>{ treino='CARDIO'; renderTreino(); }, historico:renderHistorico, analise:renderAnalise, dicas:renderDicas};
 function route(){
   const t = (location.hash||'').slice(1); const v = VIEWS[t] ? t : 'hoje';
-  document.querySelectorAll('nav.tabs a').forEach(a=>a.setAttribute('aria-current', a.dataset.tab===v ? 'page' : 'false'));
+  document.querySelectorAll('nav.tabs a').forEach(a=>a.setAttribute('aria-current', (a.dataset.tab===v || (v==='cardio'&&a.dataset.tab==='treino')) ? 'page' : 'false'));
   VIEWS[v](); main.scrollTop=0;
 }
 function setDay(d){ day=d; store.set('dayType', d); const o=dayData(); if(o.type!==d){ o.type=d; saveDay(o); } document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.day===d)); route(); }
