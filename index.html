@@ -60,8 +60,8 @@ header{background:var(--surface);border-bottom:1px solid var(--line);padding:12p
 main{flex:1;overflow-y:auto;padding:14px 16px 150px;display:flex;flex-direction:column;gap:12px;-webkit-overflow-scrolling:touch}
 main>*{flex-shrink:0}
 nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:20}
-nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-width:560px}
-nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px 10px;text-decoration:none;color:var(--muted);font-size:11.5px;font-weight:600}
+nav.tabs .in{display:grid;grid-template-columns:repeat(6,1fr);width:100%;max-width:560px}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px 10px;text-decoration:none;color:var(--muted);font-size:10.5px;font-weight:600}
 nav.tabs a svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
 nav.tabs a[aria-current="page"]{color:var(--accent)}
 
@@ -147,6 +147,39 @@ select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:10
 .week .c{background:var(--food-soft);color:var(--food);border-radius:5px;padding:2px 0;font-weight:700}
 ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
 .note{border-left:3px solid var(--warn);padding:6px 10px;background:var(--surface-2);border-radius:0 8px 8px 0;font-size:13.5px}
+.mode{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:3px}
+.mode button{border:0;background:transparent;border-radius:8px;padding:7px 4px;font-size:13px;font-weight:600;color:var(--muted)}
+.mode button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.items{display:flex;flex-direction:column;background:var(--surface-2);border-radius:10px;padding:4px 10px}
+.it{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.it:last-child{border-bottom:0}
+.it .nm{flex:1;min-width:0}
+.it .q{color:var(--muted);white-space:nowrap}
+.it .kc{color:var(--muted);font-size:12.5px;min-width:44px;text-align:right;white-space:nowrap}
+.qin{display:flex;align-items:center;gap:3px}
+.qin input{width:64px;padding:6px 6px;border:1px solid var(--line);border-radius:8px;background:var(--surface);text-align:right;font-size:14px}
+.qin .u{font-size:12px;color:var(--muted);width:18px}
+.rm{border:0;background:transparent;font-size:20px;line-height:1;color:var(--muted);padding:2px 4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label.fld input,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font-size:14px;text-transform:none;letter-spacing:0;font-weight:500;color:var(--ink);font-family:var(--body)}
+.col{display:flex;flex-direction:column;gap:8px}
+.seg3{display:flex;gap:3px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg3 button{border:0;background:transparent;border-radius:8px;padding:5px 9px;font-size:12.5px;font-weight:600;color:var(--muted)}
+.seg3 button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.tile{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.tile.good{border-left-color:var(--ok)} .tile.warn{border-left-color:var(--warn)}
+.tile .tv{font-family:var(--display);font-size:22px;font-weight:700}
+svg.chart{width:100%;height:auto;display:block;overflow:visible}
+.chart .axis{stroke:var(--line);stroke-width:1}
+.chart .grid{stroke:var(--line);stroke-width:1;stroke-dasharray:2 3}
+.chart .tgt{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:4 3}
+.chart .tk{fill:var(--muted);font-size:10px;font-family:var(--body)}
+.chart .b.food{fill:var(--food)} .chart .b.acc{fill:var(--accent)}
+.chart .hit{fill:transparent;cursor:pointer}
+.chart .ln{fill:none;stroke:var(--accent);stroke-width:2}
+.chart .dot{fill:var(--accent);stroke:var(--surface);stroke-width:2}
+.tip{min-height:18px}
 </style>
 </head>
 <body>
@@ -171,6 +204,7 @@ ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
   <a href="#refeicoes" data-tab="refeicoes"><svg viewBox="0 0 24 24"><path d="M7 3v8a2 2 0 0 0 2 2v8M11 3v8M7 7h4M17 3c-2 2-2 6 0 8v10"/></svg>Refeições</a>
   <a href="#treino" data-tab="treino"><svg viewBox="0 0 24 24"><path d="M3 10v4M6 7v10M18 7v10M21 10v4M6 12h12"/></svg>Treino</a>
   <a href="#cardio" data-tab="cardio"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg>Cardio</a>
+  <a href="#analise" data-tab="analise"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Análise</a>
   <a href="#dicas" data-tab="dicas"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3 11v1h6v-1a6 6 0 0 0-3-11z"/></svg>Dicas</a>
 </div></nav>
 
@@ -186,66 +220,97 @@ const dkey = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+
 const DIAS = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
 document.getElementById('today').textContent = DIAS[now.getDay()]+', '+now.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
 let day = store.get('dayType','casa');
-const dayData = () => store.get('d:'+dkey, {done:{}, choice:{}, water:0, sets:{}});
+const dayData = () => { const o = store.get('d:'+dkey, null) || {done:{}, choice:{}, water:0, sets:{}, act:{}}; o.done=o.done||{}; o.choice=o.choice||{}; o.sets=o.sets||{}; o.act=o.act||{}; o.water=o.water||0; return o; };
 const saveDay = (o) => store.set('d:'+dkey, o);
 
-/* ---------- dados da dieta ---------- */
+/* ---------- base de alimentos (por 100 g/ml, ou por unidade quando u='un') ---------- */
+const FD = {
+ flocao:{t:'Flocão de milho (cru)',k:360,p:7,u:'g'}, pao_int:{t:'Pão de forma integral',k:250,p:12,u:'g'},
+ pao_fr:{t:'Pão francês',k:300,p:8,u:'g'}, goma:{t:'Goma de tapioca',k:240,p:0,u:'g'},
+ aveia:{t:'Aveia em flocos',k:394,p:14,u:'g'}, wrap:{t:'Wrap integral (40 g)',k:120,p:4,u:'un'},
+ torrada:{t:'Torrada integral',k:40,p:1.3,u:'un'},
+ ovo:{t:'Ovo inteiro',k:72,p:6.5,u:'un'}, clara:{t:'Clara de ovo',k:17,p:3.6,u:'un'},
+ cottage:{t:'Queijo cottage',k:98,p:11,u:'g'}, minas:{t:'Minas frescal light',k:190,p:17,u:'g'},
+ requeijao:{t:'Requeijão light',k:180,p:10,u:'g'}, mucarela:{t:'Muçarela light',k:250,p:25,u:'g'},
+ iog_prot:{t:'Iogurte proteico',k:62,p:9.4,u:'g'}, whey:{t:'Whey protein',k:393,p:77,u:'g'},
+ nude:{t:'Leite de aveia Nude',k:45,p:0.5,u:'ml'}, leite_po:{t:'Leite em pó semidesnatado',k:420,p:33,u:'g'},
+ bebida_prot:{t:'Bebida láctea proteica UHT',k:56,p:6,u:'ml'}, barra:{t:'Barra proteica',k:190,p:15,u:'un'},
+ acai:{t:'Polpa de açaí pura',k:60,p:0.8,u:'g'}, banana:{t:'Banana prata',k:98,p:1.3,u:'g'},
+ mamao:{t:'Mamão papaya',k:40,p:0.5,u:'g'}, morango:{t:'Morango',k:30,p:0.9,u:'g'}, maca:{t:'Maçã',k:56,p:0.3,u:'g'},
+ kiwi:{t:'Kiwi',k:51,p:1.1,u:'g'}, melancia:{t:'Melancia',k:33,p:0.9,u:'g'}, melao:{t:'Melão',k:29,p:0.7,u:'g'},
+ abacaxi:{t:'Abacaxi',k:48,p:0.9,u:'g'}, tangerina:{t:'Tangerina',k:38,p:0.8,u:'g'},
+ castanha:{t:'Castanha-do-pará',k:26,p:0.6,u:'un'}, pasta_amend:{t:'Pasta de amendoim',k:600,p:25,u:'g'},
+ arroz:{t:'Arroz cozido',k:128,p:2.5,u:'g'}, feijao:{t:'Feijão cozido',k:76,p:4.8,u:'g'},
+ batata_doce:{t:'Batata-doce cozida',k:77,p:0.6,u:'g'}, batata:{t:'Batata inglesa cozida',k:52,p:1.2,u:'g'},
+ mandioquinha:{t:'Mandioquinha cozida',k:80,p:0.9,u:'g'}, mandioca:{t:'Mandioca cozida',k:125,p:0.6,u:'g'},
+ quinoa:{t:'Quinoa cozida',k:120,p:4.4,u:'g'}, macarrao:{t:'Macarrão integral cozido',k:124,p:5,u:'g'},
+ cuscuz:{t:'Cuscuz pronto',k:113,p:2.2,u:'g'},
+ legumes:{t:'Legumes cozidos',k:30,p:1.5,u:'g'}, abobora:{t:'Abóbora cabotiá',k:48,p:1.4,u:'g'},
+ folhas:{t:'Folhas (salada)',k:15,p:1.3,u:'g'}, azeite:{t:'Azeite',k:810,p:0,u:'ml'},
+ frango:{t:'Peito de frango grelhado',k:159,p:32,u:'g'}, patinho:{t:'Patinho (bife ou moído)',k:219,p:35.9,u:'g'},
+ alcatra:{t:'Alcatra ou contrafilé limpo',k:234,p:32,u:'g'}, coxa:{t:'Coxa/sobrecoxa sem pele',k:167,p:26.9,u:'g'},
+ tilapia:{t:'Tilápia grelhada',k:128,p:26,u:'g'}, linguado:{t:'Linguado grelhado',k:107,p:23.5,u:'g'},
+ salmao:{t:'Salmão grelhado',k:229,p:23.9,u:'g'}, atum:{t:'Atum em água',k:117,p:26,u:'g'}
+};
+const FD_GROUPS = [
+ ['Proteínas',['frango','patinho','alcatra','coxa','tilapia','linguado','salmao','atum','ovo','clara','whey','iog_prot','bebida_prot','barra','cottage','minas','requeijao','mucarela']],
+ ['Carboidratos',['arroz','feijao','batata_doce','batata','mandioquinha','mandioca','quinoa','macarrao','cuscuz','flocao','pao_int','pao_fr','goma','aveia','wrap','torrada']],
+ ['Frutas',['banana','mamao','morango','maca','kiwi','melancia','melao','abacaxi','tangerina','acai']],
+ ['Legumes e outros',['legumes','abobora','folhas','azeite','castanha','pasta_amend','nude','leite_po']]
+];
+const defQty = f => FD[f].u==='un' ? 1 : (FD[f].u==='ml' ? 200 : 100);
+function itemsVal(items){ let k=0,p=0; (items||[]).forEach(([f,q])=>{ const d=FD[f]; if(!d) return; const m = d.u==='un' ? (+q||0) : (+q||0)/100; k+=d.k*m; p+=d.p*m; }); return {k:Math.round(k), p:Math.round(p)}; }
+function qtyTxt(f,q){ const d=FD[f]; return d.u==='un' ? `${q} un` : `${q} ${d.u}`; }
+
+/* ---------- opções prontas ---------- */
 const CAFE = [
- {t:'Cuscuz com ovo', q:'40 g de flocão cru (≈ 110 g pronto) + 2 ovos + 2 claras + 100 g de mamão papaya', k:360, p:24},
- {t:'Pão com ovo', q:'2 fatias de pão de forma integral (50 g) + 2 ovos + 2 claras + 100 g de mamão', k:350, p:25},
- {t:'Tapioca com queijo e ovo', q:'50 g de goma hidratada + 2 ovos + 1 clara + 20 g de minas frescal light (ou 30 g de cottage) + 100 g de mamão', k:360, p:20},
- {t:'Crepioca', q:'2 ovos + 2 claras + 40 g de goma + recheio de 30 g de cottage, tomate e orégano + 100 g de mamão', k:340, p:26},
- {t:'Overnight oats proteico', q:'30 g de aveia + 1 iogurte proteico (≈ 160 g) + 15 g de whey + 100 g de morango + canela (montar na véspera)', k:310, p:31},
- {t:'Sanduíche quente de frango', q:'2 fatias de pão integral + 60 g de frango desfiado + 30 g de cottage ou requeijão light + 100 g de mamão', k:300, p:28}
+ {t:'Cuscuz com ovo', q:'40 g de flocão cru (≈ 110 g pronto) + 2 ovos + 2 claras + 100 g de mamão papaya', it:[['flocao',40],['ovo',2],['clara',2],['mamao',100]]},
+ {t:'Pão com ovo', q:'2 fatias de pão de forma integral (50 g) + 2 ovos + 2 claras + 100 g de mamão', it:[['pao_int',50],['ovo',2],['clara',2],['mamao',100]]},
+ {t:'Tapioca com queijo e ovo', q:'50 g de goma hidratada + 2 ovos + 1 clara + 20 g de minas frescal light + 100 g de mamão', it:[['goma',50],['ovo',2],['clara',1],['minas',20],['mamao',100]]},
+ {t:'Crepioca', q:'2 ovos + 2 claras + 40 g de goma + recheio de 30 g de cottage, tomate e orégano + 100 g de mamão', it:[['ovo',2],['clara',2],['goma',40],['cottage',30],['mamao',100]]},
+ {t:'Overnight oats proteico', q:'30 g de aveia + 1 iogurte proteico (≈ 160 g) + 15 g de whey + 100 g de morango + canela (montar na véspera)', it:[['aveia',30],['iog_prot',160],['whey',15],['morango',100]]},
+ {t:'Sanduíche quente de frango', q:'2 fatias de pão integral + 60 g de frango desfiado + 30 g de cottage + 100 g de mamão', it:[['pao_int',50],['frango',60],['cottage',30],['mamao',100]]}
 ];
 const LANCHE_M = [
- {t:'Bebida proteica + maçã', q:'1 bebida láctea proteica UHT de 250 ml (≈ 15 g de proteína) + 1 maçã (≈ 100 g)', k:200, p:15},
- {t:'Whey no shaker + banana', q:'25 g de whey seco no shaker (água na hora) + 1 banana prata pequena (70 g)', k:170, p:20},
- {t:'Barra proteica', q:'1 barra de até 200 kcal, ≥ 15 g de proteína, sem maltitol ou sorbitol', k:190, p:15},
- {t:'Ovos cozidos + maçã', q:'2 ovos cozidos (na bolsa térmica) + 1 maçã (100 g)', k:200, p:13},
- {t:'Atum com torrada', q:'1 sachê de atum em água (≈ 60 g) + 2 torradas integrais + 1 fruta pequena', k:200, p:17}
+ {t:'Bebida proteica + maçã', q:'1 bebida láctea proteica UHT de 250 ml + 1 maçã (≈ 100 g)', it:[['bebida_prot',250],['maca',100]]},
+ {t:'Whey no shaker + banana', q:'25 g de whey seco no shaker (água na hora) + 1 banana prata pequena (70 g)', it:[['whey',25],['banana',70]]},
+ {t:'Barra proteica', q:'1 barra de até 200 kcal, ≥ 15 g de proteína, sem maltitol ou sorbitol', it:[['barra',1]]},
+ {t:'Ovos cozidos + maçã', q:'2 ovos cozidos (na bolsa térmica) + 1 maçã (100 g)', it:[['ovo',2],['maca',100]]},
+ {t:'Atum com torrada', q:'1 sachê de atum em água (≈ 60 g) + 2 torradas integrais + 1 maçã pequena', it:[['atum',60],['torrada',2],['maca',100]]}
 ];
 const TARDE_CASA = [
- {t:'Shake de açaí', q:'200 ml de leite de aveia Nude + 100 g de polpa de açaí pura sem açúcar + 50 g de banana prata + 30 g de whey Dux', k:320, p:26},
- {t:'Panqueca de banana', q:'1 ovo + 1 clara + 50 g de banana prata + 20 g de aveia + 15 g de leite em pó semidesnatado Itambé + 15 g de whey', k:340, p:30},
- {t:'Mingau proteico', q:'200 ml de leite de aveia Nude + 20 g de aveia + 25 g de whey + canela (micro-ondas) + 50 g de banana', k:330, p:23},
- {t:'Iogurte montado', q:'1 iogurte proteico (≈ 160 g) + 100 g de morango + 15 g de aveia + 15 g de whey', k:280, p:28},
- {t:'Sanduíche de atum', q:'2 fatias de pão integral + 60 g de atum em água + 20 g de cottage + tomate + 1 fruta pequena', k:300, p:25}
+ {t:'Shake de açaí', q:'200 ml de leite de aveia Nude + 100 g de polpa de açaí pura + 50 g de banana prata + 30 g de whey', it:[['nude',200],['acai',100],['banana',50],['whey',30]]},
+ {t:'Panqueca de banana', q:'1 ovo + 1 clara + 50 g de banana + 20 g de aveia + 15 g de leite em pó semidesnatado + 15 g de whey', it:[['ovo',1],['clara',1],['banana',50],['aveia',20],['leite_po',15],['whey',15]]},
+ {t:'Mingau proteico', q:'200 ml de leite de aveia Nude + 20 g de aveia + 25 g de whey + canela + 50 g de banana', it:[['nude',200],['aveia',20],['whey',25],['banana',50]]},
+ {t:'Iogurte montado', q:'1 iogurte proteico (≈ 160 g) + 100 g de morango + 15 g de aveia + 15 g de whey', it:[['iog_prot',160],['morango',100],['aveia',15],['whey',15]]},
+ {t:'Sanduíche de atum', q:'2 fatias de pão integral + 60 g de atum + 20 g de cottage + tomate + 1 maçã pequena', it:[['pao_int',50],['atum',60],['cottage',20],['maca',100]]}
 ];
 const TARDE_PLANT = [
- {t:'Morango + castanhas', q:'150 g de morango + 2 castanhas-do-pará (8 g)', k:100, p:3},
- {t:'Fruta + castanhas', q:'1 tangerina, pera ou maçã + 2 castanhas-do-pará', k:110, p:3},
- {t:'Chá + fruta', q:'Chá sem açúcar + 1 fruta média', k:60, p:1}
+ {t:'Morango + castanhas', q:'150 g de morango + 2 castanhas-do-pará', it:[['morango',150],['castanha',2]]},
+ {t:'Fruta + castanhas', q:'1 tangerina, pera ou maçã (≈ 130 g) + 2 castanhas-do-pará', it:[['maca',130],['castanha',2]]},
+ {t:'Chá + fruta', q:'Chá sem açúcar + 1 fruta média', it:[['maca',100]]}
 ];
-const CEIA = [{t:'Bebida proteica', q:'1 bebida láctea proteica UHT de 250 ml', k:140, p:15}];
+const CEIA = [{t:'Bebida proteica', q:'1 bebida láctea proteica UHT de 250 ml', it:[['bebida_prot',250]]}];
+[CAFE,LANCHE_M,TARDE_CASA,TARDE_PLANT,CEIA].forEach(a=>a.forEach(o=>{ const v=itemsVal(o.it); o.k=v.k; o.p=v.p; }));
+
 const PROT = [
- {t:'Peito de frango grelhado', q:'100 g', k:160, p:32},
- {t:'Patinho (bife ou moído)', q:'90 g', k:195, p:32},
- {t:'Alcatra ou contrafilé limpo', q:'90 g', k:210, p:30},
- {t:'Coxa/sobrecoxa assada, sem pele', q:'120 g', k:200, p:32},
- {t:'Tilápia grelhada ou assada', q:'130 g', k:165, p:34},
- {t:'Linguado grelhado', q:'140 g', k:150, p:33, n:'pode usar +5 ml de azeite'},
- {t:'Salmão grelhado', q:'100 g', k:230, p:24, noOil:true, n:'sem azeite no prato'},
- {t:'Ovos', q:'2 inteiros + 4 claras', k:210, p:28},
- {t:'Atum em água, drenado', q:'120 g', k:140, p:31}
+ {t:'Peito de frango grelhado', it:[['frango',100]]}, {t:'Patinho (bife ou moído)', it:[['patinho',90]]},
+ {t:'Alcatra ou contrafilé limpo', it:[['alcatra',90]]}, {t:'Coxa/sobrecoxa assada, sem pele', it:[['coxa',120]]},
+ {t:'Tilápia grelhada ou assada', it:[['tilapia',130]]}, {t:'Linguado grelhado', it:[['linguado',140]], n:'pode usar +5 ml de azeite'},
+ {t:'Salmão grelhado', it:[['salmao',100]], noOil:true, n:'sem azeite no prato'}, {t:'Ovos', it:[['ovo',2],['clara',4]]},
+ {t:'Atum em água, drenado', it:[['atum',120]]}
 ];
-const CARB_ALM = [
- {t:'Arroz branco ou integral', q:'80 g (≈ 4 col. de sopa)'},{t:'Batata-doce cozida', q:'130 g'},
- {t:'Batata inglesa cozida', q:'190 g'},{t:'Mandioquinha cozida', q:'125 g'},{t:'Mandioca cozida', q:'80 g'},
- {t:'Quinoa cozida', q:'85 g'},{t:'Macarrão integral cozido', q:'80 g'},{t:'Cuscuz pronto', q:'90 g'}
-];
-const CARB_JAN = [
- {t:'Arroz + feijão', q:'50 g de arroz + 50 g de feijão'},{t:'Batata-doce cozida', q:'130 g (sem feijão)'},
- {t:'Batata inglesa cozida', q:'190 g (sem feijão)'},{t:'Mandioquinha cozida', q:'125 g (sem feijão)'},
- {t:'Macarrão integral cozido', q:'80 g (sem feijão)'}
-];
+PROT.forEach(p=>{ const v=itemsVal(p.it); p.k=v.k; p.p=v.p; p.q=p.it.map(([f,q])=>FD[f].u==='un'?`${q} ${f==='ovo'?'ovos':'claras'}`:`${q} g`).join(' + '); });
+const CARBS = ['arroz','batata_doce','batata','mandioquinha','mandioca','quinoa','macarrao','cuscuz'];
+const FEIJAO_OPTS = ['Com feijão','Sem feijão','Sem feijão, mais carboidrato no lugar'];
+
 const M = {
  cafe:{name:'Café da manhã', opts:CAFE},
  lm:{name:'Lanche da manhã', sub:'sem geladeira', opts:LANCHE_M},
- alm:{name:'Almoço', plate:true, carbs:CARB_ALM, base:250, bp:8, oil:44, fixed:'+ 80 g de feijão + 150 g de legumes + folhas à vontade + 5 ml de azeite'},
+ alm:{name:'Almoço', plate:true, carbT:100, fjG:80, leg:150, oil:5},
  tarde:{name:'Lanche da tarde', sub:'pré-treino', opts:TARDE_CASA},
  tardeP:{name:'Algo leve', opts:TARDE_PLANT},
- jan:{name:'Jantar', plate:true, carbs:CARB_JAN, base:189, bp:7, oil:27, fixed:'+ 200 g de legumes + folhas à vontade + 3 ml de azeite'},
+ jan:{name:'Jantar', plate:true, carbT:64, fjG:50, leg:200, oil:3},
  ceia:{name:'Ceia', sub:'madrugada', opts:CEIA}
 };
 const PLAN = {
@@ -253,16 +318,35 @@ const PLAN = {
  p12:[['cafe','06:30'],['lm','09:30'],['alm','13:00'],['tardeP','16:00'],['jan','20:30']],
  p24:[['cafe','06:30'],['lm','09:30'],['alm','13:00'],['tardeP','16:00'],['jan','20:30'],['ceia','02:00']]
 };
-function mealVal(id, ch){
-  const m = M[id];
-  if(m.plate){
-    const c = ch || {pr:0, cb:0}; const pr = PROT[c.pr] || PROT[0]; const cb = m.carbs[c.cb] || m.carbs[0];
-    return {k: m.base + pr.k - (pr.noOil ? m.oil : 0), p: m.bp + pr.p, pr, cb};
-  }
-  const o = m.opts[ch||0] || m.opts[0]; return {k:o.k, p:o.p, o};
+const r5 = x => Math.max(5, Math.round(x/5)*5);
+function plateItems(id, c){
+  const m = M[id]; const pr = PROT[c.pr] || PROT[0]; const cf = CARBS[c.cb] || CARBS[0];
+  const fjK = FD.feijao.k*m.fjG/100;
+  const target = c.fj===2 ? m.carbT + fjK : m.carbT;
+  const items = [[cf, r5(target/FD[cf].k*100)]];
+  if(!c.fj) items.push(['feijao', m.fjG]);
+  items.push(['legumes', m.leg], ['folhas', 50]);
+  if(!pr.noOil) items.push(['azeite', m.oil]);
+  return items.concat(pr.it.map(x=>[...x]));
 }
+function normChoice(id, ch){
+  const m = M[id];
+  if(ch==null) return m.plate ? {mode:'plate',pr:0,cb:0,fj:0} : {mode:'opt',i:0};
+  if(typeof ch==='number') return {mode:'opt', i:ch};
+  if(!ch.mode) return {mode:'plate', pr:ch.pr||0, cb:Math.min(ch.cb||0, CARBS.length-1), fj:0};
+  return ch;
+}
+function mealItems(id, ch){
+  const c = normChoice(id, ch);
+  if(c.mode==='custom') return c.items||[];
+  if(c.mode==='plate') return plateItems(id, c);
+  const o = M[id].opts[c.i] || M[id].opts[0]; return o.it;
+}
+function mealVal(id, ch){ return itemsVal(mealItems(id, ch)); }
+const hasFeijao = (id, ch) => mealItems(id, ch).some(([f])=>f==='feijao');
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const fmtN = n => Math.round(n).toLocaleString('pt-BR');
 const restTxt = r => r>=60 ? (r%60 ? Math.floor(r/60)+' min '+(r%60)+' s' : (r/60)+' min') : r+' s';
-const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 
 /* ---------- dados do treino ---------- */
 const TREINOS = {
@@ -317,49 +401,98 @@ let treino = store.get('treinoSel:'+dkey, BY_WEEKDAY[now.getDay()] || 'A');
 /* ---------- telas ---------- */
 const main = document.getElementById('main');
 
+function itemsList(items, editable, id){
+  if(!items.length) return `<div class="small muted">Nenhum alimento ainda. Adicione abaixo.</div>`;
+  return `<div class="items">${items.map(([f,q],i)=>{ const d=FD[f]; const v=itemsVal([[f,q]]);
+    return `<div class="it"><span class="nm">${esc(d.t)}</span>${editable
+      ? `<span class="qin"><input type="number" inputmode="decimal" min="0" step="${d.u==='un'?1:5}" value="${q}" data-qty="${id}" data-i="${i}" aria-label="Quantidade de ${esc(d.t)}"><span class="u">${d.u}</span></span><span class="kc num">${v.k}</span><button class="rm" data-rm="${id}" data-i="${i}" aria-label="Remover ${esc(d.t)}">×</button>`
+      : `<span class="q num">${qtyTxt(f,q)}</span><span class="kc num">${v.k} kcal</span>`}</div>`; }).join('')}</div>`;
+}
+function foodSelect(id){
+  return `<select data-add="${id}" aria-label="Adicionar alimento"><option value="">+ Adicionar alimento…</option>${FD_GROUPS.map(([g,ids])=>`<optgroup label="${g}">${ids.map(f=>`<option value="${f}">${esc(FD[f].t)}</option>`).join('')}</optgroup>`).join('')}</select>`;
+}
 function renderHoje(){
-  const dd = dayData(); const plan = PLAN[day];
+  const dd = dayData(); const type = dd.type || day; const plan = PLAN[type];
   let tk=0, tp=0, ck=0, cp=0;
   plan.forEach(([id])=>{ const v = mealVal(id, dd.choice[id]); tk+=v.k; tp+=v.p; if(dd.done[id]){ck+=v.k; cp+=v.p;} });
   const tw = BY_WEEKDAY[now.getDay()];
+  const setsBy = {}; Object.entries(dd.sets||{}).forEach(([k,a])=>{ const n=(a||[]).filter(Boolean).length; if(n) setsBy[k[0]]=(setsBy[k[0]]||0)+n; });
+  const act = dd.act || {};
   let h = `<div class="card">
-    <div class="row between"><h2>Hoje</h2><span class="pill acc">${day==='casa'?'Em casa':day==='p12'?'Plantão 12 h':'Plantão 24 h'}</span></div>
+    <div class="row between"><h2>Hoje</h2><span class="pill acc">${type==='casa'?'Em casa':type==='p12'?'Plantão 12 h':'Plantão 24 h'}</span></div>
     <div class="sum">
-      <div class="stat"><div class="small muted">Calorias comidas</div><div class="big num">${ck.toLocaleString('pt-BR')} <span class="small muted">/ ${tk.toLocaleString('pt-BR')} kcal</span></div><div class="bar food"><i style="width:${Math.min(100,ck/tk*100)}%"></i></div></div>
+      <div class="stat"><div class="small muted">Calorias comidas</div><div class="big num">${fmtN(ck)} <span class="small muted">/ ${fmtN(tk)} kcal</span></div><div class="bar food"><i style="width:${Math.min(100,ck/tk*100)}%"></i></div></div>
       <div class="stat"><div class="small muted">Proteína</div><div class="big num">${cp} <span class="small muted">/ ${tp} g</span></div><div class="bar"><i style="width:${Math.min(100,cp/tp*100)}%"></i></div></div>
     </div>
+    ${tk<1300?`<div class="note">Seu dia planejado está em ${fmtN(tk)} kcal, abaixo do mínimo de 1.300 kcal. Aumente alguma porção.</div>`:''}${tk>1550?`<div class="note">Seu dia planejado está em ${fmtN(tk)} kcal, acima da faixa do cutting (≈ 1.420). Reduza alguma porção.</div>`:''}
     <div class="small muted">${tw ? `Treino de hoje: <a href="#treino" style="color:var(--accent);font-weight:700">Treino ${tw} — ${TREINOS[tw].name}</a>` : (now.getDay()===0 ? 'Domingo: descanso total.' : 'Hoje é dia de cardio: 40–45 min a 120–140 bpm.')}${(tw==='A'||tw==='C')?' Dia de perna: passe 20 g do arroz do jantar para o pré-treino.':''}</div>
   </div>`;
-  h += `<div class="card"><div class="row between"><h3>Água</h3><span class="small muted num">${dd.water*250} / 2.500 ml</span></div><div class="water" id="water">`;
+  h += `<div class="card"><div class="row between"><h3>Água</h3><span class="small muted num">${fmtN(dd.water*250)} / 2.500 ml</span></div><div class="water">`;
   for(let i=0;i<10;i++) h += `<button aria-label="Copo ${i+1} de 250 ml" class="${i<dd.water?'on':''}" data-w="${i}"></button>`;
   h += `</div><div class="small muted">Cada copo = 250 ml. Some 500 ml por hora de treino.</div></div>`;
+
   plan.forEach(([id, hr])=>{
-    const m = M[id]; const ch = dd.choice[id]; const v = mealVal(id, ch); const done = !!dd.done[id];
+    const m = M[id]; const c = normChoice(id, dd.choice[id]); const v = mealVal(id, dd.choice[id]); const done = !!dd.done[id];
+    const sugLabel = m.plate ? 'Prato sugerido' : 'Opções prontas';
     h += `<div class="card meal ${done?'isdone':''}">
       <div class="row between"><div><div class="mtime num">${hr}</div><h3>${m.name}${m.sub?` <span class="muted small">· ${m.sub}</span>`:''}</h3></div>
-      <div style="text-align:right"><div class="pill food num">${v.k} kcal</div><div class="small muted num" style="margin-top:3px">${v.p} g prot.</div></div></div>`;
-    if(m.plate){
-      const c = ch || {pr:0, cb:0};
+      <div style="text-align:right"><div class="pill food num">${v.k} kcal</div><div class="small muted num" style="margin-top:3px">${v.p} g prot.</div></div></div>
+      <div class="mode" role="group" aria-label="Como montar"><button data-mode="${id}" data-m="${m.plate?'plate':'opt'}" aria-pressed="${c.mode!=='custom'}">${sugLabel}</button><button data-mode="${id}" data-m="custom" aria-pressed="${c.mode==='custom'}">Montar do meu jeito</button></div>`;
+    if(c.mode==='plate'){
       h += `<label class="fld" for="pr-${id}">Proteína<select id="pr-${id}" data-meal="${id}" data-kind="pr">${PROT.map((p,i)=>`<option value="${i}" ${i===c.pr?'selected':''}>${esc(p.t)} — ${p.q}</option>`).join('')}</select></label>
-      <label class="fld" for="cb-${id}">Carboidrato<select id="cb-${id}" data-meal="${id}" data-kind="cb">${m.carbs.map((p,i)=>`<option value="${i}" ${i===c.cb?'selected':''}>${esc(p.t)} — ${p.q}</option>`).join('')}</select></label>
-      <div class="qty"><b>${v.pr.q}</b> de ${esc(v.pr.t.toLowerCase())} + <b>${v.cb.q}</b> de ${esc(v.cb.t.toLowerCase())} ${v.pr.noOil ? m.fixed.replace(/ \+ \d ml de azeite/,'') + ' (sem azeite)' : m.fixed}${v.pr.n?`<div class="small muted">${v.pr.n}</div>`:''}</div>`;
+      <label class="fld" for="cb-${id}">Carboidrato<select id="cb-${id}" data-meal="${id}" data-kind="cb">${CARBS.map((f,i)=>`<option value="${i}" ${i===c.cb?'selected':''}>${esc(FD[f].t)}</option>`).join('')}</select></label>
+      <label class="fld" for="fj-${id}">Feijão<select id="fj-${id}" data-meal="${id}" data-kind="fj">${FEIJAO_OPTS.map((t,i)=>`<option value="${i}" ${i===(c.fj||0)?'selected':''}>${t}</option>`).join('')}</select></label>
+      ${itemsList(mealItems(id,c), false)}${PROT[c.pr]&&PROT[c.pr].n?`<div class="small muted">${PROT[c.pr].n}</div>`:''}`;
+    } else if(c.mode==='opt'){
+      const o = m.opts[c.i]||m.opts[0];
+      h += `<label class="fld" for="op-${id}">Opção<select id="op-${id}" data-meal="${id}" data-kind="op">${m.opts.map((o,i)=>`<option value="${i}" ${i===c.i?'selected':''}>${esc(o.t)} (${o.k} kcal)</option>`).join('')}</select></label>
+      <div class="qty">${esc(o.q)}</div>`;
     } else {
-      h += `<label class="fld" for="op-${id}">Opção<select id="op-${id}" data-meal="${id}" data-kind="op">${m.opts.map((o,i)=>`<option value="${i}" ${i===(ch||0)?'selected':''}>${esc(o.t)} (${o.k} kcal)</option>`).join('')}</select></label>
-      <div class="qty">${esc(v.o.q)}</div>`;
+      h += `<div class="small muted">Ajuste as quantidades, remova ou adicione alimentos. As calorias atualizam na hora.</div>${itemsList(c.items||[], true, id)}${foodSelect(id)}`;
     }
     h += `<button class="btn ${done?'done':''}" data-done="${id}">${done?'Feito ✓':'Marcar como feito'}</button></div>`;
   });
+
+  const sb = Object.entries(setsBy).map(([k,n])=>`Treino ${k}: ${n} séries`).join(' · ');
+  h += `<div class="card"><h3>Atividades e medidas de hoje</h3>
+    <div class="small muted">Musculação: ${sb || 'nenhuma série marcada ainda (marque na aba Treino).'}</div>
+    <div class="grid2">
+      <label class="fld" for="a-ct">Cardio<select id="a-ct" data-act="ct">${['','Esteira inclinada','Escada','Intervalado','Caminhada','Outro'].map(t=>`<option value="${t}" ${t===(act.ct||'')?'selected':''}>${t||'Não fiz'}</option>`).join('')}</select></label>
+      <label class="fld" for="a-cm">Minutos de cardio<input id="a-cm" type="number" inputmode="numeric" data-act="cm" value="${act.cm??''}" placeholder="ex.: 40"></label>
+      <label class="fld" for="a-ps">Passos<input id="a-ps" type="number" inputmode="numeric" data-act="ps" value="${act.ps??''}" placeholder="ex.: 7500"></label>
+      <label class="fld" for="a-sn">Sono (horas)<input id="a-sn" type="number" inputmode="decimal" step="0.5" data-act="sn" value="${act.sn??''}" placeholder="ex.: 7"></label>
+      <label class="fld" for="a-pe">Peso em jejum (kg)<input id="a-pe" type="number" inputmode="decimal" step="0.1" data-act="pe" value="${act.pe??''}" placeholder="ex.: 54,0"></label>
+      <label class="fld" for="a-ci">Cintura no umbigo (cm)<input id="a-ci" type="number" inputmode="decimal" step="0.5" data-act="ci" value="${act.ci??''}" placeholder="ex.: 70"></label>
+      <label class="fld" for="a-es">Barriga estufada<select id="a-es" data-act="es">${[['','Não informado'],['0','Não'],['1','Um pouco'],['2','Muito']].map(([v,t])=>`<option value="${v}" ${v===(act.es??'')?'selected':''}>${t}</option>`).join('')}</select></label>
+      <label class="fld" for="a-fo">Fome no dia<select id="a-fo" data-act="fo">${[['','Não informado'],['1','Pouca'],['2','Normal'],['3','Muita']].map(([v,t])=>`<option value="${v}" ${v===(act.fo??'')?'selected':''}>${t}</option>`).join('')}</select></label>
+    </div>
+    <label class="fld" for="a-nt">Anotações<input id="a-nt" type="text" data-act="nt" value="${esc(act.nt??'')}" placeholder="ex.: plantão puxado, comi fora"></label>
+    <div class="small muted">Tudo isso alimenta a aba Análise. Peso: 3× por semana já basta.</div>
+  </div>`;
   h += `<button class="btn" id="reset">Zerar o dia</button>`;
   main.innerHTML = h;
-  main.querySelectorAll('select[data-meal]').forEach(s=>s.addEventListener('change',()=>{
-    const o = dayData(); const id = s.dataset.meal;
-    if(s.dataset.kind==='op') o.choice[id] = +s.value;
-    else { o.choice[id] = o.choice[id] || {pr:0, cb:0}; o.choice[id][s.dataset.kind] = +s.value; }
-    saveDay(o); renderHoje();
-  }));
-  main.querySelectorAll('[data-done]').forEach(b=>b.addEventListener('click',()=>{ const o=dayData(); o.done[b.dataset.done]=!o.done[b.dataset.done]; saveDay(o); renderHoje(); }));
-  main.querySelectorAll('[data-w]').forEach(b=>b.addEventListener('click',()=>{ const o=dayData(); const i=+b.dataset.w; o.water = (o.water===i+1)? i : i+1; saveDay(o); renderHoje(); }));
-  document.getElementById('reset').addEventListener('click',()=>{ const o=dayData(); o.done={}; o.water=0; o.sets={}; saveDay(o); renderHoje(); });
+
+  const upd = fn => { const o=dayData(); fn(o); saveDay(o); const st=main.scrollTop; renderHoje(); main.scrollTop=st; };
+  main.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>upd(o=>{
+    const id=b.dataset.mode, cur=normChoice(id, o.choice[id]);
+    if(b.dataset.m==='custom'){ if(cur.mode!=='custom') o.choice[id]={mode:'custom', items:mealItems(id,cur).map(x=>[...x]), from:cur}; }
+    else if(cur.mode==='custom'){ o.choice[id] = cur.from || normChoice(id,null); }
+  })));
+  main.querySelectorAll('select[data-meal]').forEach(s=>s.addEventListener('change',()=>upd(o=>{
+    const id=s.dataset.meal; const c={...normChoice(id, o.choice[id])};
+    if(s.dataset.kind==='op') c.i=+s.value; else c[s.dataset.kind]=+s.value;
+    o.choice[id]=c;
+  })));
+  main.querySelectorAll('[data-qty]').forEach(inp=>inp.addEventListener('change',()=>upd(o=>{
+    const c=o.choice[inp.dataset.qty]; const q=parseFloat(String(inp.value).replace(',','.')); c.items[+inp.dataset.i][1] = isNaN(q)?0:q;
+  })));
+  main.querySelectorAll('[data-rm]').forEach(b=>b.addEventListener('click',()=>upd(o=>{ o.choice[b.dataset.rm].items.splice(+b.dataset.i,1); })));
+  main.querySelectorAll('[data-add]').forEach(s=>s.addEventListener('change',()=>{ if(!s.value) return; upd(o=>{ o.choice[s.dataset.add].items.push([s.value, defQty(s.value)]); }); }));
+  main.querySelectorAll('[data-done]').forEach(b=>b.addEventListener('click',()=>upd(o=>{ o.done[b.dataset.done]=!o.done[b.dataset.done]; })));
+  main.querySelectorAll('[data-w]').forEach(b=>b.addEventListener('click',()=>upd(o=>{ const i=+b.dataset.w; o.water = (o.water===i+1)? i : i+1; })));
+  main.querySelectorAll('[data-act]').forEach(el=>el.addEventListener('change',()=>{ const o=dayData(); o.act=o.act||{}; let v=el.value.trim();
+    if(el.type==='number'){ v = v==='' ? null : parseFloat(v.replace(',','.')); } o.act[el.dataset.act]=v; saveDay(o); }));
+  document.getElementById('reset').addEventListener('click',()=>upd(o=>{ o.done={}; o.water=0; o.sets={}; o.act={}; }));
 }
 
 function optList(arr){ return arr.map((o,i)=>`<div class="opt"><div class="row between"><b>${i+1}. ${esc(o.t)}</b><span class="pill food num">${o.k} kcal · ${o.p} g</span></div><div class="small">${esc(o.q)}</div></div>`).join(''); }
@@ -367,9 +500,9 @@ function renderRefeicoes(){
   let h = `<div class="card"><h2>Todas as opções por refeição</h2><div class="small muted">Meta: ≈ 1.420 kcal e 120–130 g de proteína. Pesos de arroz, feijão e proteína são do alimento pronto; flocão, aveia e goma, crus.</div></div>`;
   h += sec('Café da manhã · ≈ 300–360 kcal', optList(CAFE) + `<div class="small"><b>Trocas do carboidrato:</b> 40 g de flocão = 2 fatias de pão integral (50 g) = 50 g de goma = 1 pão francês (50 g) = 35 g de aveia = 1 wrap integral (40 g).</div>`, true);
   h += sec('Lanche da manhã · só no plantão', optList(LANCHE_M));
-  h += sec('Almoço · ≈ 410 kcal', `<div class="qty"><b>Monte o prato:</b> 1 carboidrato + 80 g de feijão + 150 g de legumes + folhas à vontade + 1 proteína + 5 ml de azeite.</div>`+ protTable() + carbTable(CARB_ALM,'Carboidratos (≈ 100 kcal)') + `<ul class="clean small"><li><b>Bowl de patinho:</b> 90 g de patinho moído com abobrinha e cenoura + 130 g de batata-doce.</li><li><b>Escondidinho fit:</b> 100 g de frango desfiado + 200 g de purê de abóbora cabotiá + 15 g de muçarela light.</li><li><b>Peixe com purê:</b> 130 g de tilápia (ou 100 g de salmão) + 125 g de purê de mandioquinha + vagem e cenoura.</li></ul>`);
+  h += sec('Almoço · ≈ 410 kcal', `<div class="qty"><b>Monte o prato:</b> 1 carboidrato + 80 g de feijão + 150 g de legumes + folhas à vontade + 1 proteína + 5 ml de azeite. <b>Sem feijão:</b> use a coluna “sem feijão” da tabela, que já compensa as calorias.</div>`+ protTable() + carbTable2('alm') + `<ul class="clean small"><li><b>Bowl de patinho:</b> 90 g de patinho moído com abobrinha e cenoura + 130 g de batata-doce.</li><li><b>Escondidinho fit:</b> 100 g de frango desfiado + 200 g de purê de abóbora cabotiá + 15 g de muçarela light.</li><li><b>Peixe com purê:</b> 130 g de tilápia (ou 100 g de salmão) + 125 g de purê de mandioquinha + vagem e cenoura.</li></ul>`);
   h += sec('Lanche da tarde · casa ≈ 320 / plantão ≈ 100', `<h3>Em casa (pré-treino)</h3>` + optList(TARDE_CASA) + `<h3>No plantão (leve)</h3>` + optList(TARDE_PLANT));
-  h += sec('Jantar · ≈ 350 kcal', `<div class="qty"><b>Monte o prato:</b> 50 g de arroz + 50 g de feijão (ou 1 troca abaixo) + 200 g de legumes + folhas + 1 proteína da tabela do almoço + 3 ml de azeite.</div>` + carbTable(CARB_JAN,'Trocas do arroz + feijão') + `<ul class="clean small"><li><b>Omelete rápida:</b> 2 ovos + 4 claras com espinafre e tomate + 130 g de batata-doce.</li><li><b>Sopa-jantar:</b> caldo de abóbora, chuchu e cenoura (≈ 400 ml) + 100 g de frango desfiado.</li><li><b>Salmão com purê:</b> 100 g de salmão + 125 g de purê de mandioquinha + vagem.</li><li><b>Ceia (plantão de 24 h):</b> 1 bebida láctea proteica UHT de 250 ml.</li></ul>`);
+  h += sec('Jantar · ≈ 350 kcal', `<div class="qty"><b>Monte o prato:</b> 1 carboidrato + 50 g de feijão + 200 g de legumes + folhas + 1 proteína da tabela do almoço + 3 ml de azeite. <b>Sem feijão:</b> use a coluna “sem feijão”.</div>` + carbTable2('jan') + `<ul class="clean small"><li><b>Omelete rápida:</b> 2 ovos + 4 claras com espinafre e tomate + 130 g de batata-doce.</li><li><b>Sopa-jantar:</b> caldo de abóbora, chuchu e cenoura (≈ 400 ml) + 100 g de frango desfiado.</li><li><b>Salmão com purê:</b> 100 g de salmão + 125 g de purê de mandioquinha + vagem.</li><li><b>Ceia (plantão de 24 h):</b> 1 bebida láctea proteica UHT de 250 ml.</li></ul>`);
   h += sec('Frutas e legumes', `<div class="small"><b>Frutas (≈ 50–60 kcal):</b> 130 g de mamão = 180 g de morango = 1 kiwi grande = 100 g de maçã = ½ banana prata (55 g) = 200 g de melão = 120 g de abacaxi = 180 g de melancia.</div><div class="small"><b>Legumes que estufam menos:</b> abobrinha, cenoura, chuchu, abóbora, vagem, berinjela, espinafre, alface, pepino, tomate. <b>Com moderação:</b> brócolis, couve-flor, repolho, cebola, alho.</div>`);
   main.innerHTML = h;
 }
@@ -380,6 +513,7 @@ main.addEventListener('click', e => {
   sc.classList.toggle('open', open); h.setAttribute('aria-expanded', open); h.querySelector('.ic').textContent = open ? '–' : '+';
 });
 function protTable(){ return `<div class="tw"><table class="tbl"><thead><tr><th>Proteína (pronta)</th><th>Qtd.</th><th class="num">kcal</th></tr></thead><tbody>${PROT.map(p=>`<tr><td>${esc(p.t)}${p.n?`<div class="small muted">${p.n}</div>`:''}</td><td>${p.q}</td><td class="num">${p.k}</td></tr>`).join('')}</tbody></table></div>`; }
+function carbTable2(id){ const m=M[id]; const fjK=FD.feijao.k*m.fjG/100; return `<div class="tw"><table class="tbl"><thead><tr><th>Carboidrato (pronto)</th><th>Com ${m.fjG} g de feijão</th><th>Sem feijão</th></tr></thead><tbody>${CARBS.map(f=>`<tr><td>${esc(FD[f].t)}</td><td class="num">${r5(m.carbT/FD[f].k*100)} g</td><td class="num">${r5((m.carbT+fjK)/FD[f].k*100)} g</td></tr>`).join('')}</tbody></table></div>`; }
 function carbTable(arr, t){ return `<div class="tw"><table class="tbl"><thead><tr><th>${t}</th><th>Qtd. (pronto)</th></tr></thead><tbody>${arr.map(c=>`<tr><td>${esc(c.t)}</td><td>${c.q}</td></tr>`).join('')}</tbody></table></div>`; }
 
 function renderTreino(){
@@ -445,6 +579,137 @@ function renderDicas(){
   main.innerHTML = h;
 }
 
+/* ---------- análise ---------- */
+function allDayKeys(){
+  const s = new Set(Object.keys(mem).filter(k=>k.startsWith('d:')));
+  try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k && k.startsWith('d:')) s.add(k); } }catch(e){}
+  return [...s].sort();
+}
+const isoOf = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function summarize(iso){
+  const d = store.get('d:'+iso, null); if(!d) return null;
+  const type = d.type || 'casa'; const plan = PLAN[type];
+  let k=0,p=0,pk=0,done=0,fj=false;
+  plan.forEach(([id])=>{ const v=mealVal(id,d.choice[id]); pk+=v.k; if(d.done&&d.done[id]){ k+=v.k; p+=v.p; done++; if(hasFeijao(id,d.choice[id])) fj=true; } });
+  const sets={}; Object.entries(d.sets||{}).forEach(([key,a])=>{ const n=(a||[]).filter(Boolean).length; if(n) sets[key[0]]=(sets[key[0]]||0)+n; });
+  const a = d.act||{}; const setsN = Object.values(sets).reduce((x,y)=>x+y,0);
+  const any = done>0 || (d.water||0)>0 || setsN>0 || Object.values(a).some(v=>v!==null&&v!=='');
+  return {iso, type, k, p, pk, done, total:plan.length, water:(d.water||0)*250, sets, setsN, treino:Object.keys(sets).join('+'),
+    ct:a.ct||'', cm:+a.cm||0, ps:+a.ps||0, sn:+a.sn||0, pe:+a.pe||0, ci:+a.ci||0, es:a.es??'', fo:a.fo??'', nt:a.nt||'', fj, any};
+}
+let range = store.get('range', 14);
+const avg = a => a.length ? a.reduce((x,y)=>x+y,0)/a.length : null;
+const f1 = n => (Math.round(n*10)/10).toLocaleString('pt-BR');
+const DOW = ['dom','seg','ter','qua','qui','sex','sáb'];
+
+function barChart(id, rows, key, target, unit, cls){
+  const W=340, H=150, pl=4, pr=4, pt=14, pb=20; const n=rows.length; const vals=rows.map(r=>r&&r[key]?r[key]:0);
+  const max = Math.max(target*1.25, ...vals, 1); const bw=(W-pl-pr)/n; const y=v=>pt+(H-pt-pb)*(1-v/max);
+  let s = `<svg viewBox="0 0 ${W} ${H}" class="chart" role="img" aria-label="Gráfico por dia">`;
+  s += `<line x1="${pl}" x2="${W-pr}" y1="${H-pb}" y2="${H-pb}" class="axis"/>`;
+  rows.forEach((r,i)=>{ const v=vals[i]; const x=pl+i*bw+bw*0.18, w=bw*0.64;
+    if(v>0){ const yy=y(v), hh=H-pb-yy; s += `<path class="b ${cls}" d="M${x},${H-pb} V${yy+Math.min(3,hh)} q0,-3 3,-3 h${Math.max(0,w-6)} q3,0 3,3 V${H-pb} Z"/>`; }
+    s += `<rect class="hit" x="${pl+i*bw}" y="${pt}" width="${bw}" height="${H-pt}" data-tip="${id}" data-txt="${esc(r.lbl+': '+(v?fmtN(v)+' '+unit:'sem registro'))}"/>`;
+    if(n<=14 || i%3===0 || i===n-1) s += `<text x="${pl+i*bw+bw/2}" y="${H-6}" class="tk" text-anchor="middle">${r.short}</text>`;
+  });
+  s += `<line x1="${pl}" x2="${W-pr}" y1="${y(target)}" y2="${y(target)}" class="tgt"/><text x="${W-pr}" y="${y(target)-4}" class="tk" text-anchor="end">meta ${fmtN(target)}</text>`;
+  return s + `</svg><div class="tip small muted" id="tip-${id}">Toque numa barra para ver o valor.</div>`;
+}
+function lineChart(id, rows, key, unit){
+  const pts = rows.map((r,i)=>[i, r&&r[key]?r[key]:null, r]).filter(x=>x[1]);
+  if(pts.length<2) return `<div class="small muted">Registre pelo menos 2 dias para ver a linha${pts.length===1?` (último: ${f1(pts[0][1])} ${unit})`:''}.</div>`;
+  const W=340,H=140,pl=34,pr=10,pt=12,pb=20, n=rows.length; const vs=pts.map(p=>p[1]);
+  let lo=Math.min(...vs), hi=Math.max(...vs); const pad=Math.max(0.5,(hi-lo)*0.25); lo-=pad; hi+=pad;
+  const X=i=>pl+(W-pl-pr)*(n===1?0.5:i/(n-1)), Y=v=>pt+(H-pt-pb)*(1-(v-lo)/(hi-lo));
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="chart" role="img" aria-label="Linha por dia">`;
+  [lo+pad, hi-pad].forEach(v=>{ s+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" class="grid"/><text x="${pl-4}" y="${Y(v)+4}" class="tk" text-anchor="end">${f1(v)}</text>`; });
+  s += `<polyline class="ln" points="${pts.map(p=>X(p[0])+','+Y(p[1])).join(' ')}"/>`;
+  pts.forEach((p,j)=>{ s+=`<circle class="dot ${j===pts.length-1?'last':''}" cx="${X(p[0])}" cy="${Y(p[1])}" r="${j===pts.length-1?5:4}"/><circle class="hit" cx="${X(p[0])}" cy="${Y(p[1])}" r="14" data-tip="${id}" data-txt="${esc(p[2].lbl+': '+f1(p[1])+' '+unit)}"/>`; });
+  s += `<text x="${pl}" y="${H-6}" class="tk">${rows[0].short}</text><text x="${W-pr}" y="${H-6}" class="tk" text-anchor="end">${rows[n-1].short}</text>`;
+  return s+`</svg><div class="tip small muted" id="tip-${id}">Toque num ponto para ver o valor.</div>`;
+}
+function tile(label, val, sub, state){ return `<div class="tile ${state||''}"><div class="small muted">${label}</div><div class="tv num">${val}</div><div class="small">${sub}</div></div>`; }
+
+function renderAnalise(){
+  const rows=[]; for(let i=range-1;i>=0;i--){ const d=new Date(now); d.setDate(now.getDate()-i); const iso=isoOf(d);
+    const s = summarize(iso) || {iso, any:false}; s.lbl = DOW[d.getDay()]+' '+d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}); s.short = String(d.getDate()); rows.push(s); }
+  const reg = rows.filter(r=>r.any); const meals = rows.filter(r=>r.done>0);
+  const last7 = rows.slice(-7), prev7 = rows.slice(-14,-7);
+  let h = `<div class="card"><div class="row between wrap"><h2>Análise</h2><div class="seg3" role="group" aria-label="Período">${[7,14,30].map(n=>`<button data-range="${n}" aria-pressed="${n===range}">${n} dias</button>`).join('')}</div></div>
+    <div class="small muted">${reg.length} de ${range} dias com algum registro. Calorias e proteína contam só as refeições marcadas como feitas.</div></div>`;
+  if(!reg.length){
+    h += `<div class="card"><h3>Ainda sem dados neste período</h3><ul class="clean small"><li>Na aba <b>Hoje</b>, marque as refeições como feitas, os copos de água e preencha atividades, peso e cintura.</li><li>Na aba <b>Treino</b>, toque nas séries concluídas.</li><li>Depois de 3–4 dias, esta tela mostra médias, gráficos e o que ajustar.</li></ul></div>`;
+    h += backupCard(); main.innerHTML=h; bindAnalise(); return;
+  }
+  const aK=avg(meals.map(r=>r.k)), aP=avg(meals.map(r=>r.p)), wDays=rows.filter(r=>r.water>0), aW=avg(wDays.map(r=>r.water));
+  const tr7=last7.filter(r=>r.setsN>=5).length, cd7=last7.filter(r=>r.cm>0), cm7=cd7.reduce((x,r)=>x+r.cm,0);
+  const psD=rows.filter(r=>r.ps>0), aPs=avg(psD.map(r=>r.ps));
+  const adh = meals.length ? Math.round(rows.reduce((x,r)=>x+(r.done||0),0)/rows.filter(r=>r.any).reduce((x,r)=>x+(r.total||0),0)*100) : 0;
+  h += `<div class="tiles">
+    ${tile('Calorias/dia', aK?fmtN(aK):'—', aK?(aK<1300?'abaixo do mínimo':aK>1520?'acima da meta':'dentro da meta'):'sem refeições', aK?(aK<1300||aK>1520?'warn':'good'):'')}
+    ${tile('Proteína/dia', aP?fmtN(aP)+' g':'—', 'meta 120–130 g', aP?(aP<110?'warn':'good'):'')}
+    ${tile('Água/dia', aW?f1(aW/1000)+' L':'—', 'meta 2,2–2,5 L', aW?(aW<2000?'warn':'good'):'')}
+    ${tile('Treinos (7 dias)', tr7+' de 4', 'dias com 5+ séries', tr7>=4?'good':tr7>=3?'':'warn')}
+    ${tile('Cardio (7 dias)', cd7.length+' de 3', fmtN(cm7)+' min no total', cd7.length>=3?'good':cd7.length>=2?'':'warn')}
+    ${tile('Adesão', adh+'%', 'refeições marcadas', adh>=85?'good':adh>=70?'':'warn')}
+  </div>`;
+  h += `<div class="card"><h3>Insights</h3><ul class="clean small">${insights(rows,last7,prev7,{aK,aP,aW,aPs,tr7,cd7}).map(t=>`<li>${t}</li>`).join('')}</ul></div>`;
+  h += `<div class="card"><h3>Calorias por dia</h3>${barChart('k',rows,'k',1420,'kcal','food')}</div>`;
+  h += `<div class="card"><h3>Proteína por dia (g)</h3>${barChart('p',rows,'p',120,'g','acc')}</div>`;
+  h += `<div class="card"><h3>Água por dia (ml)</h3>${barChart('w',rows,'water',2500,'ml','acc')}</div>`;
+  h += `<div class="card"><h3>Peso em jejum (kg)</h3>${lineChart('pe',rows,'pe','kg')}</div>`;
+  h += `<div class="card"><h3>Cintura (cm)</h3>${lineChart('ci',rows,'ci','cm')}</div>`;
+  h += `<div class="card"><h3>Dia a dia</h3><div class="tw"><table class="tbl num"><thead><tr><th>Dia</th><th>kcal</th><th>Prot.</th><th>Água</th><th>Treino</th><th>Cardio</th><th>Peso</th></tr></thead><tbody>${rows.slice().reverse().filter(r=>r.any).map(r=>`<tr><td>${r.lbl}${r.type&&r.type!=='casa'?' <span class="muted">· plantão</span>':''}${r.nt?`<div class="small muted">${esc(r.nt)}</div>`:''}</td><td>${r.k?fmtN(r.k):'—'}</td><td>${r.p?r.p+' g':'—'}</td><td>${r.water?f1(r.water/1000)+' L':'—'}</td><td>${r.treino||'—'}</td><td>${r.cm?r.cm+'′':'—'}</td><td>${r.pe?f1(r.pe):'—'}</td></tr>`).join('')}</tbody></table></div></div>`;
+  h += backupCard();
+  main.innerHTML = h; bindAnalise();
+}
+function insights(rows,last7,prev7,a){
+  const out=[]; const meals=rows.filter(r=>r.done>0);
+  if(a.aK){ if(a.aK<1300) out.push(`Média de <b>${fmtN(a.aK)} kcal</b>: abaixo do mínimo seguro de 1.300. Isso favorece perda de músculo e fome no plantão; suba as porções.`);
+    else if(a.aK>1520) out.push(`Média de <b>${fmtN(a.aK)} kcal</b>: acima da meta de ≈ 1.420. Confira as refeições montadas do seu jeito e o azeite.`);
+    else out.push(`Média de <b>${fmtN(a.aK)} kcal</b>: dentro da faixa do cutting.`); }
+  const lowP = meals.filter(r=>r.p<110).length;
+  if(a.aP && lowP) out.push(`Proteína abaixo de 110 g em <b>${lowP} de ${meals.length}</b> dias. Garanta a proteína do lanche (whey ou bebida proteica) nesses dias.`);
+  else if(a.aP) out.push(`Proteína na meta em todos os dias registrados (média ${fmtN(a.aP)} g).`);
+  const lowW = rows.filter(r=>r.water>0 && r.water<2000).length;
+  if(lowW) out.push(`Água abaixo de 2 L em <b>${lowW}</b> dias. Pouca água piora retenção e força no treino.`);
+  const plt = meals.filter(r=>r.type!=='casa'), cas = meals.filter(r=>r.type==='casa');
+  if(plt.length && cas.length){ const pk=avg(plt.map(r=>r.k)), ck=avg(cas.map(r=>r.k)); out.push(`Dias de plantão: média de ${fmtN(pk)} kcal vs ${fmtN(ck)} kcal em casa.`); }
+  if(a.tr7<4) out.push(`Treinos nos últimos 7 dias: <b>${a.tr7} de 4</b>. Encaixe o que faltou em um dia de folga do plantão.`);
+  if(a.cd7.length<3) out.push(`Cardio nos últimos 7 dias: <b>${a.cd7.length} de 3</b> sessões.`);
+  if(a.aPs) out.push(`Média de <b>${fmtN(a.aPs)} passos</b>${a.aPs<7000?': abaixo da meta de 7.000–8.000. 10 min de caminhada após almoço e jantar ajudam.':': dentro da meta.'}`);
+  const sn = rows.filter(r=>r.sn>0 && r.type==='casa'); if(sn.length>=3){ const as=avg(sn.map(r=>r.sn)); if(as<7) out.push(`Sono médio de ${f1(as)} h nos dias sem plantão. Abaixo de 7 h a fome e a perda de força aumentam.`); }
+  const es = rows.filter(r=>r.es==='1'||r.es==='2'); const esInfo = rows.filter(r=>r.es!==''&&r.es!=null);
+  if(es.length && esInfo.length>=3){ const withF = es.filter(r=>r.fj).length; const noEs = esInfo.filter(r=>r.es==='0'); const noEsF = noEs.filter(r=>r.fj).length;
+    out.push(`Barriga estufada em <b>${es.length}</b> dias; em ${withF} deles você comeu feijão${noEs.length?` (nos ${noEs.length} dias sem estufar, ${noEsF} tiveram feijão)`:''}. ${withF/es.length>0.7 && (!noEs.length || noEsF/noEs.length<0.5) ? 'O feijão parece pesar: teste a opção sem feijão por 1 semana.' : 'O feijão não parece ser a causa principal; olhe também whey, lactose e legumes.'}`); }
+  const fome = rows.filter(r=>r.fo==='3'); if(fome.length>=2){ const pl=fome.filter(r=>r.type!=='casa').length; out.push(`Muita fome em ${fome.length} dias${pl?` (${pl} de plantão)`:''}. Puxe 20 g de arroz do jantar para o lanche da manhã nesses dias.`); }
+  const w7=last7.filter(r=>r.pe>0).map(r=>r.pe), wp=prev7.filter(r=>r.pe>0).map(r=>r.pe);
+  if(w7.length>=2 && wp.length>=2){ const d=avg(w7)-avg(wp);
+    out.push(`Peso médio: ${f1(avg(w7))} kg nesta semana vs ${f1(avg(wp))} kg na anterior (${d>0?'+':''}${f1(d)} kg).`);
+    if(d< -0.5) out.push('Perda acima de 0,5 kg/semana: suba 100–150 kcal para proteger o músculo.');
+    else if(Math.abs(d)<0.1) out.push('Peso estável. Se a cintura também não cair por 3 semanas, tire 100 kcal ou some 2.000 passos/dia.'); }
+  else out.push('Registre o peso em jejum 3× por semana para comparar médias semanais (a balança sozinha oscila muito).');
+  const ci = rows.filter(r=>r.ci>0); if(ci.length>=2){ const d=ci[ci.length-1].ci-ci[0].ci; out.push(`Cintura: ${d>0?'+':''}${f1(d)} cm no período (${f1(ci[0].ci)} → ${f1(ci[ci.length-1].ci)} cm).`); }
+  return out;
+}
+function backupCard(){
+  return `<div class="card"><h3>Backup dos dados</h3><div class="small muted">Os registros ficam só neste navegador. Copie os dados de vez em quando e guarde, ou cole aqui para levar a outro celular.</div>
+  <div class="row wrap"><button class="btn sm" id="bk-copy">Copiar meus dados</button><button class="btn sm" id="bk-show">Importar dados</button></div>
+  <div id="bk-area" style="display:none" class="col"><textarea id="bk-txt" rows="5" aria-label="Dados para importar ou copiar" placeholder="Cole aqui os dados copiados"></textarea><button class="btn sm primary" id="bk-imp">Importar</button></div>
+  <div class="small" id="bk-msg"></div></div>`;
+}
+function exportData(){ const o={}; allDayKeys().forEach(k=>o[k]=store.get(k,null)); try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&(k.startsWith('load:')||k.startsWith('sub:'))) o[k]=store.get(k,null); } }catch(e){} return JSON.stringify(o); }
+function bindAnalise(){
+  main.querySelectorAll('[data-range]').forEach(b=>b.addEventListener('click',()=>{ range=+b.dataset.range; store.set('range',range); renderAnalise(); }));
+  main.querySelectorAll('[data-tip]').forEach(el=>{ const f=()=>{ const t=document.getElementById('tip-'+el.dataset.tip); if(t){ t.textContent=el.dataset.txt; t.classList.remove('muted'); } }; el.addEventListener('click',f); el.addEventListener('mouseenter',f); });
+  const msg=document.getElementById('bk-msg'), area=document.getElementById('bk-area'), txt=document.getElementById('bk-txt');
+  document.getElementById('bk-copy').addEventListener('click',async()=>{ const data=exportData();
+    try{ await navigator.clipboard.writeText(data); msg.textContent='Dados copiados. Cole numa nota ou mensagem para guardar.'; }
+    catch(e){ area.style.display='flex'; txt.value=data; txt.select(); msg.textContent='Não deu para copiar automaticamente: o texto está selecionado acima, copie manualmente.'; } });
+  document.getElementById('bk-show').addEventListener('click',()=>{ area.style.display='flex'; txt.value=''; txt.focus(); });
+  document.getElementById('bk-imp').addEventListener('click',()=>{ try{ const o=JSON.parse(txt.value); let n=0; Object.entries(o).forEach(([k,v])=>{ if(/^(d|load|sub):/.test(k)){ store.set(k,v); n++; } }); msg.textContent=`${n} registros importados.`; renderAnalise(); }catch(e){ msg.textContent='Não reconheci esses dados. Cole exatamente o texto copiado em "Copiar meus dados".'; } });
+}
+
 /* ---------- cronômetro de descanso ---------- */
 let tLeft=0, tInt=null, actx=null;
 const tEl=document.getElementById('timer'), tVal=document.getElementById('tval');
@@ -460,16 +725,16 @@ document.getElementById('tplus').addEventListener('click',()=>{ if(tLeft<=0) ret
 document.getElementById('tstop').addEventListener('click',()=>{ clearInterval(tInt); tEl.classList.remove('show'); });
 
 /* ---------- navegação ---------- */
-const VIEWS = {hoje:renderHoje, refeicoes:renderRefeicoes, treino:renderTreino, cardio:renderCardio, dicas:renderDicas};
+const VIEWS = {hoje:renderHoje, refeicoes:renderRefeicoes, treino:renderTreino, cardio:renderCardio, analise:renderAnalise, dicas:renderDicas};
 function route(){
   const t = (location.hash||'').slice(1); const v = VIEWS[t] ? t : 'hoje';
   document.querySelectorAll('nav.tabs a').forEach(a=>a.setAttribute('aria-current', a.dataset.tab===v ? 'page' : 'false'));
   VIEWS[v](); main.scrollTop=0;
 }
-function setDay(d){ day=d; store.set('dayType', d); document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.day===d)); route(); }
+function setDay(d){ day=d; store.set('dayType', d); const o=dayData(); if(o.type!==d){ o.type=d; saveDay(o); } document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.day===d)); route(); }
 document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>setDay(b.dataset.day)));
 window.addEventListener('hashchange', route);
-setDay(day);
+setDay(dayData().type || day);
 </script>
 </body>
 </html>
